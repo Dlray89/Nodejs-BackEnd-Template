@@ -38,7 +38,7 @@ function actionToBody(action) {
   };
 }
 
-// To use this in a project model, below is good example
+// To use this mapper in a project model, below is a good example
 function get(id) {
   let query = db("projects as p");
 
