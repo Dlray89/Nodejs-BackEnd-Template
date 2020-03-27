@@ -1,7 +1,8 @@
 const router = require("express").Router();
 
 const Users = require("./users-model.js");
-const restricted = require("../middleware/restricted-middleware.js");
+
+// no need to bring in restricted middleware because it has been applied to user router in server.js
 
 router.get("/", (req, res) => {
   Users.find()
@@ -25,7 +26,7 @@ router.get("/:id", verifyUserId, (req, res) => {
     });
 });
 
-router.get("/:id/tasks", restricted, verifyUserId, (req, res) => {
+router.get("/:id/tasks", verifyUserId, (req, res) => {
   const id = req.params.id;
 
   Users.findById(id)

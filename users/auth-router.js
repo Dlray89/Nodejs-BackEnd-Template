@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const secrets = require("../config/secrets.js");
+const { jwtSecret } = require("../config/secrets.js");
 
 const Users = require("./users-model.js");
 
@@ -13,11 +13,8 @@ router.post("/register", validateUserContent, (req, res) => {
 
   Users.add(user)
     .then(saved => {
-      const token = generateToken(saved);
       res.status(201).json({
         saved,
-        message: `${saved.username}`,
-        token
       });
     })
     .catch(error => {
@@ -36,12 +33,11 @@ router.post("/login", validateUserContent, (req, res) => {
         const token = generateToken(user);
 
         res.status(200).json({
-          user,
-          message: `${user.username}`,
-          token //return the token upon login
+          message: `Welcome ${user.username}!`,
+          token, //return the token upon login
         });
       } else {
-        res.status(401).json({ message: "Invalid Username or Password" });
+        res.status(401).json({ message: "Invalid Credentials" });
       }
     })
     .catch(error => {
@@ -54,12 +50,13 @@ router.post("/login", validateUserContent, (req, res) => {
 function generateToken(user) {
   const payload = {
     subject: user.id, // standard claim = sub
-    username: user.username
+    username: user.username,
+    // role: user.role || "user"  (optional: if there's role in db schema)
   };
   const options = {
-    expiresIn: "7d"
+    expiresIn: "7d",
   };
-  return jwt.sign(payload, secrets.jwtSecret, options);
+  return jwt.sign(payload, jwtSecret, options);
 }
 
 // ---------------------- Custom Middleware ---------------------- //
