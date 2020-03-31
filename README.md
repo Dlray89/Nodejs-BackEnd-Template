@@ -6,7 +6,7 @@
 
 - `mkdir < server-directory-name >`
 - `git init` //if download from a repo, use `git remote -v` to view the repo list may include `mine and origin` make sure push to the correct repo if the repo is forked from another one (to point/change the project to the correct repo, use `git remote set-url` )
-- `npm i -g gitignore` //creates gitignore file globally or
+- `npm i -g gitignore` //install gitignore file globally (optional if gitignore was installed globally)
 - `npx gitignore node` //creates git.ignore for node
 - `npm init -y` //creates package.json
 
